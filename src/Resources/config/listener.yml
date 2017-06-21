@@ -1,0 +1,11 @@
+services:
+  mvo_contao_facebook.listener.import_posts:
+    class: 'Mvo\ContaoFacebook\EventListener\ImportFacebookPostsListener'
+    arguments:
+      - '@contao.framework'
+      - '@service_container'
+  mvo_contao_facebook.listener.import_events:
+    class: 'Mvo\ContaoFacebook\EventListener\ImportFacebookEventsListener'
+    arguments:
+      - '@contao.framework'
+      - '@service_container'

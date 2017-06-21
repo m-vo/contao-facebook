@@ -1,0 +1,27 @@
+<div class="<?php echo $this->class ?>"<?php echo $this->cssID ?><?php if ($this->style): ?> style="<?php echo $this->style ?>"<?php endif ?>>
+	<?php if ($this->headline): ?>
+		<<?php echo $this->hl ?>><?php echo $this->headline ?></<?php echo $this->hl ?>>
+	<?php endif ?>
+
+<?php if($this->hasEvents): ?>
+<?php foreach ($this->events as $event): ?>
+    <article class="facebook-event<?php echo $event['class']; ?>">
+        <h3><?php echo $event['name']; ?></h3>
+        <a class="facebook-event-link" href="<?php echo $event['href']; ?>">Event on Facebook</a>
+
+        <?php if($event['hasImage']): ?>
+            <div class="facebook-event-image">
+                <?php echo $event['image']; ?>
+            </div>
+        <?php endif ?>
+
+        <time class="facebook-event-date" datetime="<?php echo $event['eventDateTime']; ?>"><?php echo $event['eventDate']; ?></time>
+        <time class="facebook-event-time" datetime="<?php echo $event['eventDateTime']; ?>"><?php echo $event['eventTime']; ?></time>
+        <p class="facebook-event-description"><?php echo $event['description']; ?></p>
+    </article>
+<?php endforeach; ?>
+<?php else:?>
+<p class="no-events">Currently there are no events available.</p>
+<?php endif;?>
+
+</div>
