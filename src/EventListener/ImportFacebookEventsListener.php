@@ -84,7 +84,7 @@ class ImportFacebookEventsListener extends ImportFacebookDataListener
                     Dbafs::deleteResource($file->path);
                 }
             }
-            $post->delete();
+            $event->delete();
         }
     }
 
