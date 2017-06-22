@@ -10,6 +10,8 @@ $GLOBALS['BE_MOD']['mvo_facebook_integration'] = [
     'mvo_facebook_events' => ['tables' => ['tl_mvo_facebook_event']]
 ];
 
+$GLOBALS['TL_CSS'][] = 'bundles/mvocontaofacebook/css/backend_svg.css';
+
 // FE
 $GLOBALS['TL_CTE']['mvo_facebook']['mvo_facebook_post_list']  = 'Mvo\\ContaoFacebook\\Element\\ContentPostList';
 $GLOBALS['TL_CTE']['mvo_facebook']['mvo_facebook_event_list'] = 'Mvo\\ContaoFacebook\\Element\\ContentEventList';
