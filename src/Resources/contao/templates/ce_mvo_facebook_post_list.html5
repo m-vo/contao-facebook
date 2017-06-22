@@ -6,15 +6,21 @@
 <?php if($this->hasPosts): ?>
 <?php foreach ($this->posts as $post): ?>
     <article class="facebook-post<?php echo $post['class']; ?>">
-        <?php if($post['hasImage']): ?>
-            <div class="facebook-post-image">
-                <?php echo $post['image']; ?>
-            </div>
-        <?php endif ?>
+        <div class="facebook-post-image">
+            <?php if($post['hasImage']): ?><?php echo $post['image']; ?>
+            <?php else: ?>
+                <div class="facebook-post-image-replacement"></div>
+            <?php endif ?>
+        </div>
+        <p class="facebook-post-info">Post via Facebook</p>
+        <time class="facebook-post-date" datetime="<?php echo $post['datetime']; ?>">
+            <?php echo $this->parseDate('d', $post['time']) ?>
+            <b><?php echo $this->parseDate('M', $post['time']) ?></b>
+        </time>
+        <h2><a href="<?php echo $post['href']; ?>"><?php echo $post['headline']; ?></a></h2>
+        <p class="facebook-post-message"><?php echo $post['mediumMessage']; ?></p>
 
-        <time class="facebook-post-date" datetime="<?php echo $post['postDateTime']; ?>"><?php echo $post['postDate']; ?></time>
-        via <a class="facebook-post-link" href="<?php echo $post['href']; ?>"> Facebook</a>
-        <p class="facebook-post-message"><?php echo $post['message']; ?></p>
+        <p class="facebook-post-link"><a href="<?php echo $post['href']; ?>">read more&hellip;</a></p>
     </article>
 <?php endforeach; ?>
 <?php else:?>

@@ -69,13 +69,19 @@ class ContentPostList extends ContentElement
             /** @var FacebookPostModel $post */
             foreach ($objPosts as $post) {
                 // base data
+                $headline = Tools::formatText($post->message, 5);
+                if (false !== $posBreak = strpos($headline, '<br>')) {
+                    $headline = substr($headline, 0, $posBreak);
+                }
+
                 $arrPost = [
-                    'postId'       => $post->postId,
-                    'message'      => Tools::formatText($post->message),
-                    'postDateTime' => date(Config::get('datimFormat'), $post->postTime),
-                    'postDate'     => date(Config::get('dateFormat'), $post->postTime),
-                    'postTime'     => date(Config::get('timeFormat'), $post->postTime),
-                    'href'         => sprintf('https://facebook.com/%s', $post->postId),
+                    'postId'        => $post->postId,
+                    'message'       => Tools::formatText($post->message),
+                    'mediumMessage' => Tools::formatText($post->message, 50),
+                    'headline'      => $headline,
+                    'time'          => $post->postTime,
+                    'datetime'      => date(Config::get('datimFormat'), $post->postTime),
+                    'href'          => sprintf('https://facebook.com/%s', $post->postId),
                 ];
 
                 // css enumeration
