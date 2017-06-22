@@ -5,9 +5,9 @@ $GLOBALS['TL_MODELS']['tl_mvo_facebook_post']  = 'Mvo\\ContaoFacebook\\Model\\Fa
 $GLOBALS['TL_MODELS']['tl_mvo_facebook_event'] = 'Mvo\\ContaoFacebook\\Model\\FacebookEventModel';
 
 // BE
-$GLOBALS['BE_MOD']['facebook_integration'] = [
-    'facebookPosts'  => ['tables' => ['tl_mvo_facebook_post']],
-    'facebookEvents' => ['tables' => ['tl_mvo_facebook_event']]
+$GLOBALS['BE_MOD']['mvo_facebook_integration'] = [
+    'mvo_facebook_posts'  => ['tables' => ['tl_mvo_facebook_post']],
+    'mvo_facebook_events' => ['tables' => ['tl_mvo_facebook_event']]
 ];
 
 // FE
