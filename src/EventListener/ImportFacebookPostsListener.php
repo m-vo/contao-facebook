@@ -57,7 +57,12 @@ class ImportFacebookPostsListener extends ImportFacebookDataListener
             if ($fbId === null) {
                 continue;
             }
-            // todo: consider skipping based on type
+
+            // skip if message is empty or type is 'link'
+            if('' == $graphNode->getField('message', '') || 'link' == $graphNode->getField('type', '')) {
+                continue;
+            }
+
             if (array_key_exists($fbId, $postDictionary)) {
                 // update existing item
                 if ($this->updateRequired($graphNode, $postDictionary[$fbId])) {
