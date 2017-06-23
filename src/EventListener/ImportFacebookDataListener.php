@@ -2,7 +2,9 @@
 
 namespace Mvo\ContaoFacebook\EventListener;
 
+use Contao\Controller;
 use Contao\CoreBundle\Framework\ContaoFrameworkInterface;
+use Contao\DC_Table;
 use Mvo\ContaoFacebook\Model\FacebookEventModel;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -39,6 +41,22 @@ abstract class ImportFacebookDataListener
 
         if ($this->shouldReImport()) {
             $this->import();
+        }
+    }
+
+    /**
+     * Trigger import without checking cache time.
+     *
+     * @param $caller
+     */
+    public function onForceImport($caller)
+    {
+        $this->framework->initialize();
+        $this->import();
+
+        // if called from within a dca (e.g. global operation) redirect afterwards
+        if ($caller instanceof DC_Table) {
+            Controller::redirect(Controller::addToUrl(null, true, ['key']));
         }
     }
 

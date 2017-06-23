@@ -3,42 +3,69 @@
 /**
  * Table tl_mvo_facebook_post
  */
+
 $GLOBALS['TL_DCA']['tl_mvo_facebook_post'] = array
 (
 
     // Config
     'config' => array
     (
-        'dataContainer'    => 'Table',
-        'enableVersioning' => false,
-        'notDeletable'     => true,
-        'notEditable'      => true,
-        'closed'           => true,
-        'sql'              => array
+        'dataContainer'     => 'Table',
+        'enableVersioning'  => false,
+        'notEditable'       => true,
+        'closed'            => true,
+        'ondelete_callback' => array(
+            function (DataContainer $dc) {
+                // delete image with record
+                $imageUuid = $dc->activeRecord->image;
+                if (null != $imageUuid) {
+                    if (Database::getInstance()
+                            ->prepare("SELECT id FROM tl_mvo_facebook_post WHERE image = ? AND id <> ?")
+                            ->execute($imageUuid, $dc->id)
+                            ->numRows == 0
+                    ) {
+                        $objFile = FilesModel::findByUuid($imageUuid);
+                        if ($objFile != null) {
+                            Files::getInstance()->delete($objFile->path);
+                            Dbafs::deleteResource($objFile->path);
+                        }
+                    }
+                };
+            }
+        ),
+        'sql'               => array
         (
             'keys' => array
             (
                 'id' => 'primary',
             )
-        )
+        ),
     ),
 
     // List
     'list'   => array
     (
-        'sorting'    => array
+        'sorting'           => array
         (
             'mode'   => 1,
             'fields' => array('postTime'),
             'flag'   => 7,
             //'panelLayout' => 'search,limit'
         ),
-        'label'      => array
+        'label'             => array
         (
             'fields' => array('message'),
             'format' => '%s',
         ),
-        'operations' => array
+        'global_operations' => array(
+            'import' => array(
+                'label' => &$GLOBALS['TL_LANG']['tl_mvo_facebook_post']['import'],
+                'href'  => 'key=import',
+                'class' => 'header_icon',
+                'icon'  => 'system/themes/' . \Backend::getTheme() . '/images/sync.gif',
+            )
+        ),
+        'operations'        => array
         (
             'show'   => array
             (
@@ -64,6 +91,12 @@ $GLOBALS['TL_DCA']['tl_mvo_facebook_post'] = array
                     ]
                 ]
             ),
+            'delete' => array
+            (
+                'label' => &$GLOBALS['TL_LANG']['tl_mvo_facebook_post']['delete'],
+                'href'  => 'act=delete',
+                'icon'  => 'delete.svg'
+            )
         )
     ),
 

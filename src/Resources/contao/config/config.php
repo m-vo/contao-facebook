@@ -6,8 +6,14 @@ $GLOBALS['TL_MODELS']['tl_mvo_facebook_event'] = 'Mvo\\ContaoFacebook\\Model\\Fa
 
 // BE
 $GLOBALS['BE_MOD']['mvo_facebook_integration'] = [
-    'mvo_facebook_posts'  => ['tables' => ['tl_mvo_facebook_post']],
-    'mvo_facebook_events' => ['tables' => ['tl_mvo_facebook_event']]
+    'mvo_facebook_posts'  => [
+        'tables' => ['tl_mvo_facebook_post'],
+        'import' => ['mvo_contao_facebook.listener.import_posts', 'onForceImport'],
+    ],
+    'mvo_facebook_events' => [
+        'tables' => ['tl_mvo_facebook_event'],
+        'import' => ['mvo_contao_facebook.listener.import_events', 'onForceImport'],
+    ]
 ];
 
 $GLOBALS['TL_CSS'][] = 'bundles/mvocontaofacebook/css/backend_svg.css';

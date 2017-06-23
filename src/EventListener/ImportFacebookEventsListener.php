@@ -76,6 +76,7 @@ class ImportFacebookEventsListener extends ImportFacebookDataListener
         // remove orphans
         /** @var FacebookEventModel $post */
         foreach ($eventDictionary as $event) {
+            // todo: generalize with dca's ondelete_callback
             if ($event->image && $file = FilesModel::findByUuid($event->image)) {
                 /** @var Collection $objEvents */
                 $objEvents = FacebookEventModel::findBy('image', $event->image);

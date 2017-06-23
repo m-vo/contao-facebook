@@ -82,6 +82,7 @@ class ImportFacebookPostsListener extends ImportFacebookDataListener
         // remove orphans
         /** @var FacebookPostModel $post */
         foreach ($postDictionary as $post) {
+            // todo: generalize with dca's ondelete_callback
             if ($post->image && $file = FilesModel::findByUuid($post->image)) {
                 /** @var Collection $objPosts */
                 $objPosts = FacebookPostModel::findBy('image', $post->image);
