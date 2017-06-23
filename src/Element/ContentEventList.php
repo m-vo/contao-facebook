@@ -60,14 +60,13 @@ class ContentEventList extends ContentElement
             foreach ($objEvents as $event) {
                 // base data
                 $arrEvent = [
-                    'eventId'       => $event->eventId,
-                    'name'          => Tools::formatText($event->name),
-                    'description'   => Tools::formatText($event->description),
-                    'locationName'  => Tools::formatText($event->locationName),
-                    'eventDateTime' => date(Config::get('datimFormat'), $event->startTime),
-                    'eventDate'     => date(Config::get('dateFormat'), $event->startTime),
-                    'eventTime'     => date(Config::get('timeFormat'), $event->startTime),
-                    'href'          => sprintf('https://facebook.com/%s', $event->eventId),
+                    'eventId'      => $event->eventId,
+                    'name'         => Tools::formatText($event->name),
+                    'description'  => Tools::formatText($event->description),
+                    'locationName' => Tools::formatText($event->locationName),
+                    'time'         => $event->startTime,
+                    'datetime'     => date(Config::get('datimFormat'), $event->startTime),
+                    'href'         => sprintf('https://facebook.com/%s', $event->eventId),
                 ];
 
                 // css enumeration

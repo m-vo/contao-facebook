@@ -6,18 +6,19 @@
 <?php if($this->hasEvents): ?>
 <?php foreach ($this->events as $event): ?>
     <article class="facebook-event<?php echo $event['class']; ?>">
-        <h3><?php echo $event['name']; ?></h3>
+        <time class="facebook-event-date" datetime="<?php echo $event['datetime']; ?>">
+            <b><?php echo $this->parseDate('jS \of F y (l)', $event['time']); ?></b> @ <?php echo $this->parseDate('h:i A', $event['time']); ?>
+        </time>
+        <h2><a href="<?php echo $event['href']; ?>"><?php echo $event['name']; ?></a></h2>
+        <div>
+            <?php if($event['hasImage']): ?>
+                <div class="facebook-event-image">
+                    <?php echo $event['image']; ?>
+                </div>
+            <?php endif ?>
+            <p class="facebook-event-description"><?php echo $event['description']; ?></p>
+        </div>
         <a class="facebook-event-link" href="<?php echo $event['href']; ?>">Event on Facebook</a>
-
-        <?php if($event['hasImage']): ?>
-            <div class="facebook-event-image">
-                <?php echo $event['image']; ?>
-            </div>
-        <?php endif ?>
-
-        <time class="facebook-event-date" datetime="<?php echo $event['eventDateTime']; ?>"><?php echo $event['eventDate']; ?></time>
-        <time class="facebook-event-time" datetime="<?php echo $event['eventDateTime']; ?>"><?php echo $event['eventTime']; ?></time>
-        <p class="facebook-event-description"><?php echo $event['description']; ?></p>
     </article>
 <?php endforeach; ?>
 <?php else:?>
