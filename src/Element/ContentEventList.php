@@ -12,6 +12,9 @@ use Contao\Model\Collection;
 use Mvo\ContaoFacebook\Facebook\Tools;
 use Mvo\ContaoFacebook\Model\FacebookEventModel;
 
+/**
+ * @property bool fullsize
+ */
 class ContentEventList extends ContentElement
 {
     /**
@@ -94,6 +97,7 @@ class ContentEventList extends ContentElement
                             'singleSRC' => $objFile->path,
                             'alt'       => $strAlt,
                             'size'      => deserialize($this->size),
+                            'fullsize'  => $this->fullsize
                         ]
                     );
                     $arrEvent['image']    = $objImageTemplate->parse();

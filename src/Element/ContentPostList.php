@@ -15,6 +15,7 @@ use Mvo\ContaoFacebook\Model\FacebookPostModel;
 
 /**
  * @property int mvo_facebook_numberOfPosts
+ * @property bool fullsize
  */
 class ContentPostList extends ContentElement
 {
@@ -109,6 +110,7 @@ class ContentPostList extends ContentElement
                             'singleSRC' => $objFile->path,
                             'alt'       => $strAlt,
                             'size'      => deserialize($this->size),
+                            'fullsize'  => $this->fullsize
                         ]
                     );
                     $arrPost['image']    = $objImageTemplate->parse();
