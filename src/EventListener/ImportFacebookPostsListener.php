@@ -41,6 +41,7 @@ class ImportFacebookPostsListener extends ImportFacebookDataListener
                 'link',
                 'message',
                 'picture',
+                'full_picture',
                 'object_id',
                 'updated_time'
             ],
@@ -58,8 +59,12 @@ class ImportFacebookPostsListener extends ImportFacebookDataListener
                 continue;
             }
 
-            // skip if message is empty or type is 'link'
-            if('' == $graphNode->getField('message', '') || 'link' == $graphNode->getField('type', '')) {
+            // skip if message is empty or type is 'link' and the message only contains an URL
+            $message = $graphNode->getField('message', '');
+            if ('' == $message
+                || ('link' == $graphNode->getField('type', '')
+                    && 1 == preg_match('~^\s*https://\S*\s*?$~', $message))
+            ) {
                 continue;
             }
 
@@ -141,25 +146,31 @@ class ImportFacebookPostsListener extends ImportFacebookDataListener
      */
     private function getImage(GraphNode $graphNode)
     {
-        if (null !== $graphNode->getField('picture', null)
-            && null !== $objectId = $graphNode->getField('object_id', null)
-        ) {
-            $metaData = [
+        if (null !== $graphNode->getField('picture', null)) {
+            $metaData  = [
                 'caption' =>
                     [
                         'caption' => $graphNode->getField('caption', ''),
                         'link'    => $graphNode->getField('link', ''),
                     ]
             ];
+            $fileModel = null;
 
-            $fileModel = ImageScraper::scrape(
-                $objectId,
-                $graphNode->getField('type', ''),
-                serialize($metaData)
-            );
+            if (null !== $objectId = $graphNode->getField('object_id', null)) {
+                $fileModel = ImageScraper::scrapeObject(
+                    $objectId,
+                    $graphNode->getField('type', ''),
+                    serialize($metaData)
+                );
+            } elseif (null !== $pictureUri = $graphNode->getField('full_picture', null)) {
+                $fileModel = ImageScraper::scrapeFile(
+                    'p_' . $graphNode->getField('id'),
+                    $pictureUri,
+                    serialize($metaData)
+                );
+            }
             return (null !== $fileModel) ? $fileModel->uuid : null;
         }
-
         return null;
     }
 }

@@ -161,7 +161,7 @@ class ImportFacebookEventsListener extends ImportFacebookDataListener
                     ]
             ];
 
-            $fileModel = ImageScraper::scrape(
+            $fileModel = ImageScraper::scrapeObject(
                 $objectId,
                 'photo',
                 serialize($metaData)

@@ -25,17 +25,12 @@ class ImageScraper
      *
      * @return FilesModel|null
      */
-    public static function scrape(string $objectId, string $type, $serializedMetaData = '')
+    public static function scrapeObject(string $objectId, string $type, $serializedMetaData = '')
     {
-        // check if resource exists already
-        if (null != ($fileModel =
-                \FilesModel::findByPath(self::getUploadDirectory() . '/' . self::getUploadDestination($objectId)))
-        ) {
-            if ($serializedMetaData != $fileModel->meta) {
-                self::updateMetaData($fileModel, $objectId, $serializedMetaData);
-            }
+        $destinationFile = self::getUploadDestination($objectId);
+        if (null != $fileModel = self::updateResourceIfExists($destinationFile, $objectId, $serializedMetaData)) {
             return $fileModel;
-        }
+        };
 
         // try to get best fitting image uri
         $sourceUri = self::getSourceUri($objectId, $type);
@@ -43,9 +38,61 @@ class ImageScraper
             return null;
         }
 
-        // setup directory & download it
-        $destinationFile = self::getUploadDestination($objectId);
+        return self::scrape($sourceUri, $destinationFile, $objectId, $serializedMetaData);
+    }
 
+    /**
+     * @param string $identifier
+     * @param string $sourceUri
+     * @param string $serializedMetaData
+     *
+     * @return FilesModel|null
+     */
+    public static function scrapeFile(string $identifier, string $sourceUri, $serializedMetaData = '')
+    {
+        $destinationFile = self::getUploadDestination($identifier);
+        if (null != $fileModel = self::updateResourceIfExists($destinationFile, $identifier, $serializedMetaData)) {
+            return $fileModel;
+        };
+
+        return self::scrape($sourceUri, $destinationFile, $identifier, $serializedMetaData);
+    }
+
+    /**
+     * @param string $destinationFile
+     * @param string $identifier
+     * @param string $serializedMetaData
+     *
+     * @return FilesModel|null
+     */
+    private static function updateResourceIfExists(
+        string $destinationFile,
+        string $identifier,
+        string $serializedMetaData
+    ) {
+        // check if resource exists already
+        if (null != ($fileModel =
+                \FilesModel::findByPath(self::getUploadDirectory() . '/' . $destinationFile))
+        ) {
+            if ($serializedMetaData != $fileModel->meta) {
+                self::updateMetaData($fileModel, $identifier, $serializedMetaData);
+            }
+            return $fileModel;
+        }
+        return null;
+    }
+
+    /**
+     * @param $sourceUri
+     * @param $destinationFile
+     * @param $identifier
+     * @param $serializedMetaData
+     *
+     * @return FilesModel|null
+     */
+    private static function scrape($sourceUri, $destinationFile, $identifier, $serializedMetaData)
+    {
+        // setup directory & download it
         if (!self::checkDirExists(self::getUploadDirectory(true) . '/' . self::facebookUploadSubDir)) {
             return null;
         }
@@ -59,7 +106,7 @@ class ImageScraper
             return null;
         }
 
-        self::updateMetaData($fileModel, $objectId, $serializedMetaData);
+        self::updateMetaData($fileModel, $identifier, $serializedMetaData);
         return $fileModel;
     }
 
@@ -148,13 +195,14 @@ class ImageScraper
     }
 
     /**
-     * @param string $objectId
+     * @param string $identifier
+     * @param bool   $addExtension
      *
      * @return string
      */
-    private static function getUploadDestination(string $objectId)
+    private static function getUploadDestination(string $identifier, bool $addExtension = true)
     {
-        return self::facebookUploadSubDir . '/' . sprintf('%s.jpg', $objectId);
+        return self::facebookUploadSubDir . '/' . ($addExtension ? sprintf('%s.jpg', $identifier) : $identifier);
     }
 
     /**
@@ -209,12 +257,12 @@ class ImageScraper
 
     /**
      * @param FilesModel $fileModel
-     * @param            $objectId
-     * @param            $metaDescription
+     * @param string     $name
+     * @param string     $metaDescription
      */
-    private static function updateMetaData(FilesModel $fileModel, $objectId, $metaDescription)
+    private static function updateMetaData(FilesModel $fileModel, string $name, string $metaDescription)
     {
-        $fileModel->name = $objectId;
+        $fileModel->name = $name;
         $fileModel->meta = $metaDescription;
         $fileModel->save();
     }
