@@ -21,6 +21,7 @@ class MvoContaoFacebookExtension extends ConfigurableExtension
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('listener.yml');
 
+        $container->setParameter('mvo_contao_facebook.import_enabled', $mergedConfig['import_enabled']);
         $container->setParameter('mvo_contao_facebook.app_id', $mergedConfig['app_id']);
         $container->setParameter('mvo_contao_facebook.app_secret', $mergedConfig['app_secret']);
         if (isset($mergedConfig['access_token']) && $mergedConfig['access_token'] != '') {
