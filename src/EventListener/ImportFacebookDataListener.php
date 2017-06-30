@@ -32,11 +32,17 @@ abstract class ImportFacebookDataListener
         $this->container = $container;
     }
 
+    protected abstract function import();
+
     /**
      * Trigger import.
      */
     public function onImport()
     {
+        if (!$this->isEnabled()) {
+            return;
+        }
+
         $this->framework->initialize();
 
         if ($this->shouldReImport()) {
@@ -51,6 +57,10 @@ abstract class ImportFacebookDataListener
      */
     public function onForceImport($caller)
     {
+        if (!$this->isEnabled()) {
+            return;
+        }
+
         $this->framework->initialize();
         $this->import();
 
@@ -63,7 +73,7 @@ abstract class ImportFacebookDataListener
     /**
      * @return bool Returns true if the present data exceeds the minimum cache time.
      */
-    private function shouldReImport()
+    private function shouldReImport() : bool
     {
         $diff             = time() - FacebookEventModel::getLastTimestamp();
         $minimumCacheTime = $this->container->getParameter('mvo_contao_facebook.minimum_cache_time');
@@ -71,6 +81,12 @@ abstract class ImportFacebookDataListener
         return $diff >= $minimumCacheTime;
     }
 
-    protected abstract function import();
+    /**
+     * @return bool
+     */
+    private function isEnabled(): bool
+    {
+        return $this->container->getParameter('mvo_contao_facebook.import_enabled');
+    }
 
 }

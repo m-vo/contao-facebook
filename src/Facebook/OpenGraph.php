@@ -52,9 +52,28 @@ class OpenGraph
     }
 
 
+    /**
+     * @param string $entity
+     * @param array  $fieldNames
+     * @param array  $params
+     * @param bool   $noPagedQuery
+     *
+     * @return \Facebook\FacebookResponse|null
+     */
     private static function performRequest(string $entity, array $fieldNames, array $params = [], $noPagedQuery = false)
     {
         $container = System::getContainer();
+        if (null == $container->getParameter('mvo_contao_facebook.app_id')
+            || null == $container->getParameter('mvo_contao_facebook.app_secret')
+            || null == $container->getParameter('mvo_contao_facebook.access_token')
+            || null == $container->getParameter('mvo_contao_facebook.fb_page_name')
+        ) {
+            self::logError(
+                'Incomplete configuration. Specify at least mvo_contao_facebook.app_id, ' .
+                'mvo_contao_facebook.app_secret, mvo_contao_facebook.access_token and ' .
+                'mvo_contao_facebook.fb_page_name in your config.yml'
+            );
+        }
 
         $fb = new Facebook(
             [

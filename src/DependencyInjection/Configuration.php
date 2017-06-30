@@ -7,7 +7,6 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 class Configuration implements ConfigurationInterface
 {
-
     /**
      * Generates the configuration tree builder.
      *
@@ -19,28 +18,25 @@ class Configuration implements ConfigurationInterface
         $rootNode    = $treeBuilder->root('mvo_contao_facebook');
 
         $rootNode->children()
+            ->booleanNode('import_enabled')
+                ->defaultFalse()
+                ->end()
             ->scalarNode('app_id')
-                ->isRequired()
-                ->cannotBeEmpty()
-            ->end()
+                ->end()
             ->scalarNode('app_secret')
-                ->isRequired()
-                ->cannotBeEmpty()
-            ->end()
+                ->end()
             ->scalarNode('access_token')
-            ->end()
+                ->end()
             ->integerNode('minimum_cache_time')
-                ->defaultValue(1000)
+                ->defaultValue(250)
                 ->min(0)
-            ->end()
+                ->end()
             ->scalarNode('fb_page_name')
-                ->isRequired()
-                ->cannotBeEmpty()
-            ->end()
+                ->end()
             ->integerNode('number_of_posts')
-                ->defaultValue(5)
+                ->defaultValue(15)
                 ->min(1)
-            ->end();
+                ->end();
 
         return $treeBuilder;
     }
