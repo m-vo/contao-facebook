@@ -3,34 +3,18 @@
 namespace Mvo\ContaoFacebook\EventListener;
 
 use Contao\Controller;
-use Contao\CoreBundle\Framework\ContaoFrameworkInterface;
+use Contao\CoreBundle\Framework\FrameworkAwareInterface;
+use Contao\CoreBundle\Framework\FrameworkAwareTrait;
 use Contao\DC_Table;
 use Mvo\ContaoFacebook\Model\FacebookEventModel;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
 
-abstract class ImportFacebookDataListener
+abstract class ImportFacebookDataListener  implements ContainerAwareInterface, FrameworkAwareInterface
 {
-    /**
-     * @var ContaoFrameworkInterface
-     */
-    protected $framework;
-    /**
-     * @var ContainerInterface
-     */
-    protected $container;
-
-    /**
-     * Constructor.
-     *
-     * @param ContaoFrameworkInterface $framework
-     * @param ContainerInterface       $container
-     */
-    public function __construct(ContaoFrameworkInterface $framework, ContainerInterface $container)
-    {
-        $this->framework = $framework;
-        $this->container = $container;
-    }
+    use ContainerAwareTrait;
+    use FrameworkAwareTrait;
 
     protected abstract function import();
 
