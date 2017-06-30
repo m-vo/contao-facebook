@@ -25,3 +25,6 @@ $GLOBALS['TL_CTE']['mvo_facebook']['mvo_facebook_event_list'] = 'Mvo\\ContaoFace
 // data import
 $GLOBALS['TL_CRON']['minutely'][] = ['mvo_contao_facebook.listener.import_posts', 'onImport'];
 $GLOBALS['TL_CRON']['minutely'][] = ['mvo_contao_facebook.listener.import_events', 'onImport'];
+
+// open graph tags
+$GLOBALS['TL_HOOKS']['generatePage'][] =  ['mvo_contao_facebook.listener.open_graph_tags', 'onInject'];
