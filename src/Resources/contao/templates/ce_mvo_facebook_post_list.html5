@@ -24,7 +24,7 @@
     </article>
 <?php endforeach; ?>
 <?php else:?>
-    <p class="no-posts">Currently there are no posts available.</p>
+    <p class="no-posts"><?php echo $this->empty; ?></p>
 <?php endif;?>
 
 </div>

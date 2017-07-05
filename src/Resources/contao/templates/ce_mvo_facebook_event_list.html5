@@ -22,7 +22,7 @@
     </article>
 <?php endforeach; ?>
 <?php else:?>
-<p class="no-events">Currently there are no events available.</p>
+<p class="no-events"><?php echo $this->empty; ?></p>
 <?php endif;?>
 
 </div>

@@ -124,5 +124,10 @@ class ContentPostList extends ContentElement
         }
         $this->Template->posts    = $arrPosts;
         $this->Template->hasPosts = 0 != count($arrPosts);
+
+        if(!$this->Template->hasPosts) {
+            self::loadLanguageFile('templates');
+            $this->Template->empty = $GLOBALS['TL_LANG']['MSC']['mvo_facebook_emptyPostList'];
+        }
     }
 }

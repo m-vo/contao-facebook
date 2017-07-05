@@ -112,5 +112,10 @@ class ContentEventList extends ContentElement
 
         $this->Template->events    = $arrEvents;
         $this->Template->hasEvents = 0 != count($arrEvents);
+
+        if(!$this->Template->hasEvents) {
+            self::loadLanguageFile('templates');
+            $this->Template->empty = $GLOBALS['TL_LANG']['MSC']['mvo_facebook_emptyEventList'];
+        }
     }
 }
