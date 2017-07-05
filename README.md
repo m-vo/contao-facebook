@@ -10,7 +10,7 @@ that can be enabled independently:
  There are two Content Elements to display a number of posts/events in the
  frontend. High resolution images get downloaded into the folder
  ``files/facebook``. Make sure to make this folder public if you use the
- default templates so that image that do not get treated by the asset
+ default templates so that images that do not get treated by the asset
  management will get displayed.
  
  Note that the largest size of images that will be downloaded will be smaller
