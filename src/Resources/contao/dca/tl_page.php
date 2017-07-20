@@ -32,7 +32,6 @@ $GLOBALS['TL_DCA']['tl_page']['fields']['mvo_facebook_og_images'] = [
         'fieldType'  => 'checkbox',
         'orderField' => 'mvo_facebook_og_images_order',
         'files'      => true,
-        'mandatory'  => true
     ],
     'sql'       => "blob NULL"
 ];
