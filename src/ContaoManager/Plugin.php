@@ -2,14 +2,15 @@
 
 declare(strict_types = 1);
 
-namespace Mvo\ContaoFacebook;
+namespace Mvo\ContaoFacebook\ContaoManager;
 
 use Contao\ManagerPlugin\Bundle\BundlePluginInterface;
 use Contao\ManagerPlugin\Bundle\Parser\ParserInterface;
 use Contao\ManagerPlugin\Bundle\Config\BundleConfig;
 use Contao\ManagerPlugin\Dependency\DependentPluginInterface;
+use Mvo\ContaoFacebook\MvoContaoFacebookBundle;
 
-class ContaoManagerPlugin implements BundlePluginInterface, DependentPluginInterface
+class Plugin implements BundlePluginInterface, DependentPluginInterface
 {
     /**
      * {@inheritdoc}

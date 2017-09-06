@@ -1,11 +1,15 @@
 <?php
 
 // models
+$GLOBALS['TL_MODELS']['tl_mvo_facebook']       = 'Mvo\\ContaoFacebook\\Model\\FacebookModel';
 $GLOBALS['TL_MODELS']['tl_mvo_facebook_post']  = 'Mvo\\ContaoFacebook\\Model\\FacebookPostModel';
 $GLOBALS['TL_MODELS']['tl_mvo_facebook_event'] = 'Mvo\\ContaoFacebook\\Model\\FacebookEventModel';
 
 // BE
 $GLOBALS['BE_MOD']['mvo_facebook_integration'] = [
+    'mvo_facebook'  => [
+        'tables' => ['tl_mvo_facebook'],
+    ],
     'mvo_facebook_posts'  => [
         'tables' => ['tl_mvo_facebook_post'],
         'import' => ['mvo_contao_facebook.listener.import_posts', 'onForceImport'],
@@ -27,4 +31,4 @@ $GLOBALS['TL_CRON']['minutely'][] = ['mvo_contao_facebook.listener.import_posts'
 $GLOBALS['TL_CRON']['minutely'][] = ['mvo_contao_facebook.listener.import_events', 'onImport'];
 
 // open graph tags
-$GLOBALS['TL_HOOKS']['generatePage'][] =  ['mvo_contao_facebook.listener.open_graph_tags', 'onInject'];
+$GLOBALS['TL_HOOKS']['generatePage'][] = ['mvo_contao_facebook.listener.open_graph_tags', 'onInject'];

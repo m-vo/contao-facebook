@@ -33,6 +33,6 @@
     }
   },
   "extra": {
-    "contao-manager-plugin": "Mvo\\ContaoFacebook\\ContaoManagerPlugin"
+    "contao-manager-plugin": "Mvo\\ContaoFacebook\\ContaoManager\\Plugin"
   }
 }
